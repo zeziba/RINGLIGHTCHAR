@@ -15,47 +15,47 @@ int maxCount = 255, divCount = 48;
 static void neoPixelStart()
 {
 #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
-    clock_prescale_set(clock_div_1);
+  clock_prescale_set(clock_div_1);
 #endif
-    pixels.begin();
+  pixels.begin();
 }
 
 void effect0()
 {
-    pixels.clear();
+  pixels.clear();
 
-    for (int i = 0; i < NUMPIXELS; i++)
-    {
+  for (int i = 0; i < NUMPIXELS; i++)
+  {
 
-        pixels.setPixelColor(i, pixels.Color(r, g, b));
-        pixels.show();
+    pixels.setPixelColor(i, pixels.Color(r, g, b));
+    pixels.show();
 
-        b += maxCount / divCount;
-    }
+    b += maxCount / divCount;
+  }
 
-    if (b > maxCount)
-    {
-        b = 0;
-        g += maxCount / divCount;
-    }
-    if (g > maxCount)
-    {
-        g = 0;
-        r += maxCount / divCount;
-    }
-    if (r > maxCount)
-        r = 0;
+  if (b > maxCount)
+  {
+    b = 0;
+    g += maxCount / divCount;
+  }
+  if (g > maxCount)
+  {
+    g = 0;
+    r += maxCount / divCount;
+  }
+  if (r > maxCount)
+    r = 0;
 }
 
 static void neoPixelEffects(int effectNum)
 {
-    switch (effectNum)
-    {
-    case 0:
-        effect0();
-        break;
+  switch (effectNum)
+  {
+  case 0:
+    effect0();
+    break;
 
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 }

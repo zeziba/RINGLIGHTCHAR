@@ -14,22 +14,22 @@ Task pixelTask1(DELAYVAL * 1000, TASK_FOREVER, &callback1, &runner, true);
 void setup()
 {
 #ifdef SERIAL_ENABLE
-    Serial.begin(BAUD_RATE);
-    Serial.println();
+  Serial.begin(BAUD_RATE);
+  Serial.println();
 #endif
 
-    wifiServerStart();
+  wifiServerStart();
 
-    neoPixelStart();
+  neoPixelStart();
 }
 
 void loop()
 {
-    runner.execute();
-    server.handleClient();
+  runner.execute();
+  server.handleClient();
 }
 
 void callback1()
 {
-    neoPixelEffects(0);
+  neoPixelEffects(0);
 }
