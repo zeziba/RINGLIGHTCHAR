@@ -29,7 +29,6 @@ void effect0()
 
         pixels.setPixelColor(i, pixels.Color(r, g, b));
         pixels.show();
-        delay(DELAYVAL);
 
         b += maxCount / divCount;
     }
