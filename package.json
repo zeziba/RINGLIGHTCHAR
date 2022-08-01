@@ -2,7 +2,7 @@
   "name": "ringlightchar",
   "version": "1.0.0",
   "description": "A control site for the Charles NeoPixel Creeper",
-  "source": "./mini/html/index.html",
+  "source": "./mini/index.html",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -15,7 +15,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel src/html/*",
-    "build": "parcel build mini/html/index.html --no-source-maps"
+    "build": "parcel build mini/index.html --no-source-maps"
   },
   "dependencies": {
     "jquery": "^3.6.0",

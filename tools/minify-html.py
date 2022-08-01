@@ -21,10 +21,12 @@ def minify(input_file: str) -> str:
     url = URL_FILE_EXT[extension.strip(".")]
 
     import requests
+    
+    logging.info(f"minify::starting to minify file {input_file}")
 
     with open(input_file, "r") as file:
         data = {"input": file.read()}
-        logging.info(
+        logging.debug(
             f"minify::Attempting to 'POST' @ {url} with \n{('*'*50)}  DATA  {('*'*50)}\n{data}\n{('*'*50)}  END  {('*'*50)}"
         )
         with requests.post(url=url, data=data) as response:

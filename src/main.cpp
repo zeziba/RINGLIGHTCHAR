@@ -26,7 +26,7 @@ void setup()
 void loop()
 {
   runner.execute();
-  server.handleClient();
+  // server.handleClient();
 }
 
 void callback1()

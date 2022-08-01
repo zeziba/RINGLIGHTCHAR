@@ -2,72 +2,63 @@
 #define _SERVER_H_
 
 #include "env.h"
-#include "index.h"
+#include "hex_index.h"
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-#include <LittleFS.h>
+#include <ESPAsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include "pins.h"
+#include <ArduinoJson.h>
 
 #define PORT 80
 
-String loadFile(char *file)
-{
-  return "";
-}
+const char* PARAM_INPUT_1 = "output";
+const char* PARAM_INPUT_2 = "state";
+
+String outputState(int output);
+
+const uint8_t sizeof_buttons = 1;
+const String GUI_buttons[] PROGMEM = {
+  "<h4>Output - GPIO 2</h4><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleCheckbox(this)\" id=\"2\" " + outputState(D2) + "><span class=\"slider\"></span></label>"
+};
 
 // Web Server
-static ESP8266WebServer server(PORT);
-// Serverable Web page
-void handleRoot()
-{
-  server.send(200, "text/html", index_html);
-}
+static AsyncWebServer server(PORT);
 
-void handlePlain()
+String outputState(int output)
 {
-  if (server.method() != HTTP_POST)
+  if (digitalRead(output))
   {
-    server.send(405, "text/plain", "Method Not Allowed");
+    Serial.print("outputState::Toggled " + output);
+    Serial.println(" pin.");
+    return "checked";
   }
   else
   {
-    server.send(200, "text/plain", "POST body was:\n" + server.arg("plain"));
+    return "";
   }
 }
 
-void handleForm()
+String processor(const String& var)
 {
-  if (server.method() != HTTP_POST)
+  // Serial.println(var);
+  if (var == "BUTTONPLACEHOLDER")
   {
-    server.send(405, "text/plain", "Method Not Allowed");
-  }
-  else
-  {
-    String message = "POST form was:\n";
-    for (uint8_t i = 0; i < server.args(); i++)
+    String buttons = "";
+    
+    if (sizeof_buttons == 0)
     {
-      message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
+      return buttons;
     }
-    server.send(200, "text/plain", message);
+    
+    for (int i = 0; i < sizeof_buttons; i++)
+    {
+      buttons += GUI_buttons[i];
+    }
+    return buttons;
   }
-}
-
-void handleNotFound()
-{
-  String message = "File Not Found\n\n";
-  message += "URI: ";
-  message += server.uri();
-  message += "\nMethod: ";
-  message += (server.method() == HTTP_GET) ? "GET" : "POST";
-  message += "\nArguments: ";
-  message += server.args();
-  message += "\n";
-  for (uint8_t i = 0; i < server.args(); i++)
-  {
-    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-  }
-  server.send(404, "text/plain", message);
+  return String();
 }
 
 static void wifiServerStart()
@@ -87,10 +78,15 @@ static void wifiServerStart()
     Serial.println("MDNS responder started");
   }
 
-  server.on("/", handleRoot);
-  server.on("/postplain/", handlePlain);
-  server.on("/postform/", handleForm);
-  server.onNotFound(handleNotFound);
+  // Start up onBoard LED for status light
+  pinMode(D4, OUTPUT);
+
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send_P(200, "text/html", data___src_hex_index_h, processor);
+  });
+  // server.on("/postplain/", handlePlain);
+  // server.on("/postform/", handleForm);
+  // server.onNotFound(handleNotFound);
 
   server.begin();
   Serial.printf("Web server started, open %s in a web browser\n", WiFi.localIP().toString().c_str());

@@ -3,7 +3,6 @@
 from io import BufferedReader, FileIO, TextIOWrapper
 import os
 import logging
-from re import I
 
 logging.basicConfig(level=logging.INFO)
 
@@ -32,17 +31,6 @@ COMPILER_MACRO_END = """
 #endif
 """
 
-
-def ascii_to_hex(text: str) -> str:
-    output = []
-
-    logging.info(f"ascii_to_hex::converting {text[:10]}... to hex")
-    for char in text:
-        output.append(hex(ord(char)))
-
-    return ",".join(output)
-
-
 def _write_progmem_to_file(
     file: TextIOWrapper | BufferedReader | FileIO, data: str, dir=""
 ) -> None:
@@ -64,10 +52,7 @@ def _write_progmem_to_file(
     
     file.write(f"// {os.path.normpath(dir)}\n")
     file.write(
-        f"const char *data_{filename}_{file_extension}_path PROGMEM = \"{dir}/\";\n"
-    )
-    file.write(
-        f"const char data_{filename}_{file_extension}[] PROGMEM = {{{data.upper()}}};\n\n"
+        f"const char data_{filename}_{file_extension}[] PROGMEM = R\"rawliteral({data})rawliteral\";\n\n"
     )
     file.write(f"{COMPILER_MACRO_END}")
 
@@ -92,13 +77,12 @@ def convert_dir(in_dir: str, out_dir: str) -> None:
             filename_new = f"hex_{name.split('.')[0]}.h"
             logging.info(f"convert_dir::converting {os.path.join(root,name)}")
             with open(os.path.join(root, name), "r") as file:
-                hexed = ascii_to_hex(file.read())
 
                 nw_file_location = os.path.join(out_dir, filename_new)
                 logging.info(
                     f"convert_dir::writing converted file {os.path.join(root, name)} -> {nw_file_location}"
                 )
-                write_progmem_to_file(nw_file_location, hexed, os.path.join(root, name))
+                write_progmem_to_file(nw_file_location, file.read(), os.path.join(root, name))
 
 
 if __name__ == "__main__":
