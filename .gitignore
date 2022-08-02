@@ -7,6 +7,9 @@ env.h
 dep/
 mini/
 
+.vscode/launch.json
+get-platformio.py
+
 
 ####
 #### Python gitginore
