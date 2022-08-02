@@ -25,6 +25,7 @@ Once the above are installed then it is possible to finish the installation proc
     > Run ``npm install``
 5. Create ``./src/env.h`` file following this format
 
+```
     #ifndef _ENV_H_
     #define _ENV_H_
 
@@ -36,8 +37,9 @@ Once the above are installed then it is possible to finish the installation proc
     #define PSWD_M "<Your Specific PASS>"
 
     #endif
+```
 
-6. Change partitions_singleapp.csv as needed and the file name in platformio.ini as needed for your specific needs
+1. Change partitions_singleapp.csv as needed and the file name in platformio.ini as needed for your specific needs
 
 At this point the project is set up and ready to be used for development, once the project is ready for deployment follow these instructions before building
 
