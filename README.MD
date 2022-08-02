@@ -26,17 +26,17 @@ Once the above are installed then it is possible to finish the installation proc
 5. Create ``./src/env.h`` file following this format
 
 ```
-    #ifndef _ENV_H_
-    #define _ENV_H_
+#ifndef _ENV_H_
+#define _ENV_H_
 
-    #include <Arduino.h>
+#include <Arduino.h>
 
-    #define SERIAL_ENABLE 0 // 0 is false 1 is true
-    #define BAUD_RATE 115200 // Baud rate for serial
-    #define SSID_M "<Your Specific SSID>"
-    #define PSWD_M "<Your Specific PASS>"
+#define SERIAL_ENABLE 0 // 0 is false 1 is true
+#define BAUD_RATE 115200 // Baud rate for serial
+#define SSID_M "<Your Specific SSID>"
+#define PSWD_M "<Your Specific PASS>"
 
-    #endif
+#endif
 ```
 
 1. Change partitions_singleapp.csv as needed and the file name in platformio.ini as needed for your specific needs
