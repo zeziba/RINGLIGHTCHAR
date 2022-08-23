@@ -7,6 +7,7 @@
 // Get NeoPixel ready to be used
 static Adafruit_NeoPixel pixels(NUMPIXELS, D5, NEO_GRB + NEO_KHZ800);
 #define DELAYVAL 10
+#define ITERATIONS 3
 
 // Values for RGB colors
 int r = 0, g = 0, b = 0;
@@ -18,6 +19,16 @@ static void neoPixelStart()
   clock_prescale_set(clock_div_1);
 #endif
   pixels.begin();
+}
+
+void setAll(uint32_t value)
+{
+  for (int i = 0; i < NUMPIXELS; i++)
+  {
+    pixels.setPixelColor(i, value);
+  }
+
+  pixels.show();
 }
 
 void effect0()
@@ -47,12 +58,31 @@ void effect0()
     r = 0;
 }
 
+void effect1()
+{
+  // Twinkle Effect
+  setAll(0);
+
+  int i = 0;
+  while (i < NUMPIXELS)
+  {
+    pixels.setPixelColor(i, random(0, 255), random(0, 255), random(0, 255));
+    i += random(0, NUMPIXELS / ITERATIONS);
+  }
+
+  pixels.show();
+}
+
 static void neoPixelEffects(int effectNum)
 {
   switch (effectNum)
   {
   case 0:
     effect0();
+    break;
+
+  case 1:
+    effect1();
     break;
 
   default:

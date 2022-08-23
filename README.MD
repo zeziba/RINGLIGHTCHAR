@@ -43,6 +43,10 @@ Once the above are installed then it is possible to finish the installation proc
 
 At this point the project is set up and ready to be used for development, once the project is ready for deployment follow these instructions before building
 
+#### Note
+
+Might need to run ``npm build`` to compile html
+
 1. Minify the src/html to mini/
     > Run ``python ./tools/minify-html.py``
 2. Bundle the mini/* files into dist/index.html

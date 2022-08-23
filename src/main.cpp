@@ -26,10 +26,9 @@ void setup()
 void loop()
 {
   runner.execute();
-  // server.handleClient();
 }
 
 void callback1()
 {
-  neoPixelEffects(0);
+  neoPixelEffects(1);
 }
