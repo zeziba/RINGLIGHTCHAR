@@ -2,6 +2,7 @@
 
 import os
 import logging
+from shutil import rmtree
 
 logging.basicConfig(level=logging.INFO)
 
@@ -71,5 +72,7 @@ def minify_input_dir(input_dir: str, out_dir: str) -> None:
 
 
 if __name__ == "__main__":
+    logging.info("__main__::Attempting to remove old minified files")
+    rmtree(OUTPUT_DIR)
     logging.info("__main__::Starting minify program @ minify_input_dir")
     minify_input_dir(INPUT_DIR, OUTPUT_DIR)
